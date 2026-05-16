@@ -17,6 +17,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/app/pos', 'PosController@index')->name('app.pos.index');
     Route::post('/app/pos', 'PosController@store')->name('app.pos.store');
 
+    Route::get('/app/pos/cash-register/summary', 'CashRegisterSessionController@summary')->name('app.pos.cash-register.summary');
+    Route::post('/app/pos/cash-register/open', 'CashRegisterSessionController@open')->name('app.pos.cash-register.open');
+    Route::post('/app/pos/cash-register/close', 'CashRegisterSessionController@close')->name('app.pos.cash-register.close');
+
     //Generate PDF
     Route::get('/sales/pdf/{id}', function ($id) {
         $sale = \Modules\Sale\Entities\Sale::findOrFail($id);

@@ -3,13 +3,13 @@
 namespace Modules\Sale\Http\Controllers;
 
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Modules\People\Entities\Customer;
 use Modules\Product\Entities\Category;
 use Modules\Product\Entities\Product;
+use Modules\Sale\Entities\CashRegisterSession;
 use Modules\Sale\Entities\Sale;
 use Modules\Sale\Entities\SaleDetails;
 use Modules\Sale\Entities\SalePayment;
@@ -19,17 +19,28 @@ class PosController extends Controller
 {
 
     public function index() {
+        abort_if(Gate::denies('create_pos_sales'), 403);
+
         Cart::instance('sale')->destroy();
 
         $customers = Customer::all();
         $product_categories = Category::all();
+        $cashRegisterSession = CashRegisterSession::openSessionForUser(auth()->id());
 
-        return view('sale::pos.index', compact('product_categories', 'customers'));
+        return view('sale::pos.index', compact('product_categories', 'customers', 'cashRegisterSession'));
     }
 
 
     public function store(StorePosSaleRequest $request) {
-        DB::transaction(function () use ($request) {
+        $cashRegisterSession = CashRegisterSession::openSessionForUser(auth()->id());
+
+        if (!$cashRegisterSession) {
+            toast(__('sale::messages.cash_register_required'), 'error');
+
+            return redirect()->route('app.pos.index');
+        }
+
+        DB::transaction(function () use ($request, $cashRegisterSession) {
             $due_amount = $request->total_amount - $request->paid_amount;
 
             if ($due_amount == $request->total_amount) {
@@ -43,6 +54,7 @@ class PosController extends Controller
             $sale = Sale::create([
                 'date' => now()->format('Y-m-d'),
                 'reference' => 'PSL',
+                'cash_register_session_id' => $cashRegisterSession->id,
                 'customer_id' => $request->customer_id,
                 'customer_name' => Customer::findOrFail($request->customer_id)->customer_name,
                 'tax_percentage' => $request->tax_percentage,

@@ -109,5 +109,23 @@ return [
     'edit_payment' => 'Edit Payment',
     'update_payment' => 'Update Payment',
 
-    
+    'cash_register_open_title' => 'Open cash register',
+    'cash_register_open_help' => 'Enter the cash amount currently in the drawer before selling.',
+    'opening_balance' => 'Opening balance',
+    'opening_note' => 'Opening note',
+    'confirm_open_register' => 'Open register',
+    'cash_register_close_title' => 'Close cash register',
+    'expected_cash_in_drawer' => 'Expected cash in drawer',
+    'counted_cash' => 'Counted cash',
+    'closing_note' => 'Closing note',
+    'confirm_close_register' => 'Close register',
+    'cash_register_open_banner' => 'Cash register open',
+    'close_cash_register' => 'Close register',
+    'opened_at' => 'Opened at',
+    'cash_register_required' => 'You must open the cash register before completing a POS sale.',
+    'cash_register_opened' => 'Cash register opened.',
+    'cash_register_already_open' => 'You already have an open cash register.',
+    'cash_register_closed' => 'Cash register closed.',
+    'summary_load_error' => 'Could not load summary.',
+
 ];

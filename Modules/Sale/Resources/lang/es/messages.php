@@ -108,4 +108,23 @@ return [
     'edit_payment' => 'Editar Pago',
     'update_payment' => 'Actualizar Pago',
 
+    'cash_register_open_title' => 'Apertura de caja',
+    'cash_register_open_help' => 'Indique el efectivo inicial en caja antes de realizar ventas.',
+    'opening_balance' => 'Fondo inicial',
+    'opening_note' => 'Nota de apertura',
+    'confirm_open_register' => 'Abrir caja',
+    'cash_register_close_title' => 'Cierre de caja',
+    'expected_cash_in_drawer' => 'Efectivo esperado en caja',
+    'counted_cash' => 'Efectivo contado',
+    'closing_note' => 'Nota de cierre',
+    'confirm_close_register' => 'Cerrar caja',
+    'cash_register_open_banner' => 'Caja abierta',
+    'close_cash_register' => 'Cerrar caja',
+    'opened_at' => 'Apertura',
+    'cash_register_required' => 'Debe abrir caja antes de completar una venta en el POS.',
+    'cash_register_opened' => 'Caja abierta correctamente.',
+    'cash_register_already_open' => 'Ya tiene una caja abierta.',
+    'cash_register_closed' => 'Caja cerrada correctamente.',
+    'summary_load_error' => 'No se pudo cargar el resumen.',
+
 ];
