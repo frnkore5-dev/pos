@@ -23,15 +23,18 @@ class ProductController extends Controller
     }
 
 
-    public function create() {
+    public function create(Request $request) {
         abort_if(Gate::denies('create_products'), 403);
 
-        return view('product::products.create');
+        $prefillCode = $request->query('product_code', '');
+        $returnTo = $request->query('return_to', '');
+
+        return view('product::products.create', compact('prefillCode', 'returnTo'));
     }
 
 
     public function store(StoreProductRequest $request) {
-        $product = Product::create($request->except('document'));
+        $product = Product::create($request->except('document', 'return_to'));
 
         if ($request->has('document')) {
             foreach ($request->input('document', []) as $file) {
@@ -40,6 +43,10 @@ class ProductController extends Controller
         }
 
         toast(__('controller_messages.product_created'), 'success');
+
+        if ($request->input('return_to') === 'pos') {
+            return redirect()->route('app.pos.index');
+        }
 
         return redirect()->route('products.index');
     }

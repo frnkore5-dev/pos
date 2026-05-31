@@ -38,7 +38,7 @@
 
 {{-- Cierre de caja --}}
 <div class="modal fade" id="cashRegisterCloseModal" tabindex="-1" role="dialog" aria-labelledby="cashRegisterCloseModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="cashRegisterCloseModalLabel">
@@ -51,15 +51,67 @@
             <form id="cash-register-close-form" method="POST" action="{{ route('app.pos.cash-register.close') }}">
                 @csrf
                 <div class="modal-body">
-                    <p class="mb-2">
-                        <span class="text-muted">{{ __('sale::messages.expected_cash_in_drawer') }}</span><br>
-                        <strong class="lead" id="cash-register-expected-display">—</strong>
+                    <p class="small text-muted mb-2" id="cash-register-summary-loading" style="display:none;">
+                        <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
+                        {{ __('sale::messages.loading') }}
                     </p>
-                    <p class="small text-muted mb-3" id="cash-register-summary-loading" style="display:none;">{{ __('sale::messages.loading') }}</p>
+
+                    <h6 class="text-muted text-uppercase small mb-2">{{ __('sale::messages.close_summary_title') }}</h6>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-sm table-bordered mb-0">
+                            <tbody>
+                                <tr>
+                                    <th class="bg-light">{{ __('sale::messages.opening_balance') }}</th>
+                                    <td class="text-right font-weight-bold" id="cr-opening">—</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">{{ __('sale::messages.total_cash') }}</th>
+                                    <td class="text-right font-weight-bold text-success" id="cr-total-cash">—</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">{{ __('sale::messages.total_card') }}</th>
+                                    <td class="text-right font-weight-bold text-primary" id="cr-total-card">—</td>
+                                </tr>
+                                <tr id="cr-other-row" style="display:none;">
+                                    <th class="bg-light">{{ __('sale::messages.other_payments') }}</th>
+                                    <td class="text-right font-weight-bold" id="cr-total-other">—</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">{{ __('sale::messages.pending_amount') }}</th>
+                                    <td class="text-right font-weight-bold text-danger" id="cr-total-pending">—</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">{{ __('sale::messages.sales_count') }}</th>
+                                    <td class="text-right" id="cr-sales-count">—</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">{{ __('sale::messages.total_sales') }}</th>
+                                    <td class="text-right" id="cr-total-sales">—</td>
+                                </tr>
+                                <tr class="table-warning">
+                                    <th>{{ __('sale::messages.expected_cash_in_drawer') }}</th>
+                                    <td class="text-right font-weight-bold lead mb-0" id="cash-register-expected-display">—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <hr>
+
                     <div class="form-group">
                         <label for="closing_amount_counted">{{ __('sale::messages.counted_cash') }} <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="closing_amount_counted" id="closing_amount_counted" required autocomplete="off">
+                        <input type="text" class="form-control form-control-lg" name="closing_amount_counted" id="closing_amount_counted" required autocomplete="off">
+                        <small class="form-text text-muted">{{ __('sale::messages.counted_cash_help') }}</small>
                     </div>
+
+                    <div class="alert alert-secondary py-2 mb-3" id="cr-difference-box" style="display:none;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>{{ __('sale::messages.cash_difference') }}:</span>
+                            <strong class="lead mb-0" id="cr-difference-display">—</strong>
+                        </div>
+                        <small class="text-muted d-block mt-1">{{ __('sale::messages.cash_difference_help') }}</small>
+                    </div>
+
                     <div class="form-group mb-0">
                         <label for="closing_note">{{ __('sale::messages.closing_note') }}</label>
                         <textarea class="form-control" name="closing_note" id="closing_note" rows="3" maxlength="1000"></textarea>
@@ -67,7 +119,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('sale::messages.close') }}</button>
-                    <button type="submit" class="btn btn-warning">{{ __('sale::messages.confirm_close_register') }}</button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="bi bi-printer"></i> {{ __('sale::messages.close_and_print') }}
+                    </button>
                 </div>
             </form>
         </div>

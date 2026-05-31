@@ -19,8 +19,9 @@ class SettingController extends Controller
         abort_if(Gate::denies('access_settings'), 403);
 
         $settings = Setting::firstOrFail();
+        $customers = \Modules\People\Entities\Customer::orderBy('customer_name')->get(['id', 'customer_name']);
 
-        return view('setting::index', compact('settings'));
+        return view('setting::index', compact('settings', 'customers'));
     }
 
 
@@ -33,6 +34,7 @@ class SettingController extends Controller
             'company_address' => $request->company_address,
             'default_currency_id' => $request->default_currency_id,
             'default_currency_position' => $request->default_currency_position,
+            'default_customer_id' => $request->default_customer_id ?: null,
         ]);
 
         cache()->forget('settings');

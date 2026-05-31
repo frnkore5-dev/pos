@@ -53,6 +53,7 @@ return [
     'sales' => 'Sales',
     'create_sale' => 'Create Sale',
     'all_sales' => 'All Sales',
+    'cash_register_history' => 'Cash Register Closes',
     'sale_returns' => 'Sale Returns',
     'create_sale_return' => 'Create Sale Return',
     'all_sale_returns' => 'All Sale Returns',

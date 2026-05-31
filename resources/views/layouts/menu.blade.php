@@ -133,7 +133,7 @@
 @endcan
 
 @can('access_sales')
-    <li class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('sales.*') || request()->routeIs('sale-payments*') ? 'c-show' : '' }}">
+    <li class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('sales.*') || request()->routeIs('sale-payments*') || request()->routeIs('cash-register-sessions.*') ? 'c-show' : '' }}">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
             <i class="c-sidebar-nav-icon bi bi-receipt" style="line-height: 1;"></i> {{ __('messages.sales') }}
         </a>
@@ -150,6 +150,11 @@
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link {{ request()->routeIs('sales.index') ? 'c-active' : '' }}" href="{{ route('sales.index') }}">
                     <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> {{ __('messages.all_sales') }}
+                </a>
+            </li>
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{ request()->routeIs('cash-register-sessions.*') ? 'c-active' : '' }}" href="{{ route('cash-register-sessions.index') }}">
+                    <i class="c-sidebar-nav-icon bi bi-cash-coin" style="line-height: 1;"></i> {{ __('messages.cash_register_history') }}
                 </a>
             </li>
         </ul>

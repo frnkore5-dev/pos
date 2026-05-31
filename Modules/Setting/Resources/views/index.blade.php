@@ -65,6 +65,18 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
+                                        <label for="default_customer_id">{{ __('setting::messages.default_pos_customer') }}</label>
+                                        <select name="default_customer_id" id="default_customer_id" class="form-control">
+                                            <option value="">{{ __('setting::messages.select_default_customer') }}</option>
+                                            @foreach($customers as $customer)
+                                                <option {{ $settings->default_customer_id == $customer->id ? 'selected' : '' }} value="{{ $customer->id }}">{{ $customer->customer_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <small class="form-text text-muted">{{ __('setting::messages.default_pos_customer_help') }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
                                         <label for="notification_email">{{ __('setting::messages.notification_email') }} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="notification_email" value="{{ $settings->notification_email }}" required>
                                     </div>

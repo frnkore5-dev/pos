@@ -92,6 +92,9 @@ return [
     'grand_total' => 'Total General',
 
     'search_placeholder' => 'Escribe el nombre o código del producto...',
+    'scan_placeholder' => 'Escanear código de barras o buscar producto...',
+    'scan_help' => 'Apunte el lector al código de barras: el producto se agrega solo al escanear (el lector envía Enter automáticamente).',
+    'scan_not_found' => 'Código no encontrado. Verifique el producto e intente de nuevo.',
     'load_more' => 'Cargar Más',
     'no_product_found' => 'No se encontró ningún producto...',
 

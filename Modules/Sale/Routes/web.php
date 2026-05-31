@@ -20,6 +20,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/app/pos/cash-register/summary', 'CashRegisterSessionController@summary')->name('app.pos.cash-register.summary');
     Route::post('/app/pos/cash-register/open', 'CashRegisterSessionController@open')->name('app.pos.cash-register.open');
     Route::post('/app/pos/cash-register/close', 'CashRegisterSessionController@close')->name('app.pos.cash-register.close');
+    Route::get('/app/pos/cash-register/{session}/pdf', 'CashRegisterSessionController@pdf')->name('app.pos.cash-register.pdf');
+
+    Route::get('/cash-register-sessions', 'CashRegisterHistoryController@index')->name('cash-register-sessions.index');
+    Route::get('/cash-register-sessions/{session}', 'CashRegisterHistoryController@show')->name('cash-register-sessions.show');
 
     //Generate PDF
     Route::get('/sales/pdf/{id}', function ($id) {

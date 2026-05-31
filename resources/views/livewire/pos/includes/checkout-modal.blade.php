@@ -43,6 +43,22 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label>{{ __('sale::messages.quick_payment') }}</label>
+                                <div class="d-flex flex-wrap">
+                                    <button type="button" class="btn btn-outline-primary btn-sm mr-1 mb-1 pos-quick-pay" data-amount="exact">{{ __('sale::messages.exact_amount') }}</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm mr-1 mb-1 pos-quick-pay" data-amount="20">20</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm mr-1 mb-1 pos-quick-pay" data-amount="50">50</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm mr-1 mb-1 pos-quick-pay" data-amount="100">100</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm mr-1 mb-1 pos-quick-pay" data-amount="200">200</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm mr-1 mb-1 pos-quick-pay" data-amount="500">500</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm mr-1 mb-1 pos-quick-pay" data-amount="1000">1000</button>
+                                </div>
+                            </div>
+                            <div id="pos-change-display" class="alert alert-success py-2 mb-3 d-none">
+                                <strong>{{ __('sale::messages.change') }}:</strong>
+                                <span id="pos-change-amount" class="font-weight-bold"></span>
+                            </div>
+                            <div class="form-group">
                                 <label for="payment_method">{{ __('sale::messages.payment_method') }} <span class="text-danger">*</span></label>
                                 <select class="form-control" name="payment_method" id="payment_method" required>
                                     <option value="Cash">{{ __('sale::messages.cash') }}</option>

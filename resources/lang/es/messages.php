@@ -53,6 +53,7 @@ return [
     'sales' => 'Ventas',
     'create_sale' => 'Crear Venta',
     'all_sales' => 'Todas las Ventas',
+    'cash_register_history' => 'Cierres de Caja',
     'sale_returns' => 'Devoluciones de Venta',
     'create_sale_return' => 'Crear Devolución de Venta',
     'all_sale_returns' => 'Todas las Devoluciones de Venta',

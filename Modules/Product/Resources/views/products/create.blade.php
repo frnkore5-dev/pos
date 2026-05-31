@@ -14,6 +14,9 @@
     <div class="container-fluid">
         <form id="product-form" action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @if(!empty($returnTo))
+                <input type="hidden" name="return_to" value="{{ $returnTo }}">
+            @endif
             <div class="row">
                 <div class="col-lg-12">
                     @include('utils.alerts')
@@ -34,7 +37,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="product_code">{{ __('product::messages.code') }} <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="product_code" required value="{{ old('product_code') }}">
+                                        <input type="text" class="form-control" name="product_code" required value="{{ old('product_code', $prefillCode ?? '') }}">
                                     </div>
                                 </div>
                             </div>

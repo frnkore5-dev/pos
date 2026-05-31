@@ -26,8 +26,9 @@ class PosController extends Controller
         $customers = Customer::all();
         $product_categories = Category::all();
         $cashRegisterSession = CashRegisterSession::openSessionForUser(auth()->id());
+        $defaultCustomerId = settings()->default_customer_id ?? Customer::orderBy('id')->value('id');
 
-        return view('sale::pos.index', compact('product_categories', 'customers', 'cashRegisterSession'));
+        return view('sale::pos.index', compact('product_categories', 'customers', 'cashRegisterSession', 'defaultCustomerId'));
     }
 
 
@@ -40,7 +41,9 @@ class PosController extends Controller
             return redirect()->route('app.pos.index');
         }
 
-        DB::transaction(function () use ($request, $cashRegisterSession) {
+        $saleId = null;
+
+        DB::transaction(function () use ($request, $cashRegisterSession, &$saleId) {
             $due_amount = $request->total_amount - $request->paid_amount;
 
             if ($due_amount == $request->total_amount) {
@@ -103,10 +106,14 @@ class PosController extends Controller
                     'payment_method' => $request->payment_method
                 ]);
             }
+
+            $saleId = $sale->id;
         });
 
         toast(__('controller_messages.pos_sale_created'), 'success');
 
-        return redirect()->route('sales.index');
+        return redirect()
+            ->route('app.pos.index')
+            ->with('pos_sale_completed_id', $saleId);
     }
 }

@@ -92,6 +92,9 @@ return [
     'grand_total' => 'Grand Total',
 
     'search_placeholder' => 'Type product name or code...',
+    'scan_placeholder' => 'Scan barcode or search product...',
+    'scan_help' => 'Point the scanner at the barcode: the product is added automatically when scanned (the scanner sends Enter).',
+    'scan_not_found' => 'Code not found. Check the product and try again.',
     'load_more' => 'Load More',
     'no_product_found' => 'No Product Found...',
 

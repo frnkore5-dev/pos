@@ -17,4 +17,8 @@ class Setting extends Model
     public function currency() {
         return $this->belongsTo(Currency::class, 'default_currency_id', 'id');
     }
+
+    public function defaultCustomer() {
+        return $this->belongsTo(\Modules\People\Entities\Customer::class, 'default_customer_id', 'id');
+    }
 }

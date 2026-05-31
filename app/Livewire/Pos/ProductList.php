@@ -14,38 +14,99 @@ class ProductList extends Component
 
     protected $listeners = [
         'selectedCategory' => 'categoryChanged',
-        'showCount'        => 'showCountChanged'
+        'showCountChanged'  => 'showCountChanged',
+        'posSearchUpdated'  => 'searchUpdated',
+        'posBrowseAll'      => 'browseAll',
     ];
 
     public $categories;
     public $category_id;
-    public $limit = 9;
+    public $limit = 18;
+    public $showGrid = false;
+    public $searchQuery = '';
+    public $browseAllActive = false;
 
-    public function mount($categories) {
+    public function mount($categories)
+    {
         $this->categories = $categories;
         $this->category_id = '';
     }
 
-    public function render() {
+    public function render()
+    {
+        $products = $this->showGrid
+            ? Product::query()
+                ->when($this->category_id, fn ($query) => $query->where('category_id', $this->category_id))
+                ->when($this->searchQuery, function ($query) {
+                    $term = $this->searchQuery;
+                    $query->where(function ($inner) use ($term) {
+                        $inner->where('product_name', 'like', '%' . $term . '%')
+                            ->orWhere('product_code', 'like', '%' . $term . '%');
+                    });
+                })
+                ->paginate($this->limit)
+            : collect();
+
         return view('livewire.pos.product-list', [
-            'products' => Product::when($this->category_id, function ($query) {
-                return $query->where('category_id', $this->category_id);
-            })
-            ->paginate($this->limit)
+            'products' => $products,
         ]);
     }
 
-    public function categoryChanged($category_id) {
-        $this->category_id = $category_id;
+    public function categoryChanged($category_id)
+    {
+        $this->category_id = $category_id ?: '';
+        $this->browseAllActive = false;
+        $this->updateGridVisibility();
         $this->resetPage();
     }
 
-    public function showCountChanged($value) {
-        $this->limit = $value;
+    public function searchUpdated($query = '')
+    {
+        $this->searchQuery = is_string($query) ? $query : '';
+        $this->browseAllActive = false;
+        $this->updateGridVisibility();
         $this->resetPage();
     }
 
-    public function selectProduct($product) {
-        $this->dispatch('productSelected', $product);
+    public function browseAll()
+    {
+        $this->browseAllActive = true;
+        $this->category_id = '';
+        $this->searchQuery = '';
+        $this->showGrid = true;
+        $this->dispatch('posClearSearch');
+        $this->resetPage();
+    }
+
+    public function hideGrid()
+    {
+        $this->browseAllActive = false;
+        $this->category_id = '';
+        $this->searchQuery = '';
+        $this->showGrid = false;
+        $this->dispatch('posClearSearch');
+        $this->dispatch('posCatalogHidden');
+        $this->resetPage();
+    }
+
+    public function showCountChanged($value)
+    {
+        $this->limit = $value ?: 9999;
+        $this->resetPage();
+    }
+
+    public function selectProduct($productId)
+    {
+        $product = Product::findOrFail($productId);
+
+        $this->dispatch('productSelected', product: $product->toArray());
+        $this->dispatch('focus-product-search');
+    }
+
+    private function updateGridVisibility(): void
+    {
+        $this->showGrid = $this->browseAllActive
+            || filled($this->category_id)
+            || filled(trim($this->searchQuery));
     }
 }
