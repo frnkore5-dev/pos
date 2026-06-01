@@ -24,14 +24,29 @@ class Product extends Model implements HasMedia
 
     public function registerMediaCollections(): void {
         $this->addMediaCollection('images')
-            ->useFallbackUrl(asset('images/fallback_product_image.png'));
+            ->useFallbackUrl($this->productImagePlaceholder());
     }
 
     public function getProductImageUrl(string $conversionName = ''): string
     {
         $url = $this->getFirstMediaUrl('images', $conversionName);
 
-        return $url !== '' ? $url : asset('images/fallback_product_image.png');
+        if ($url === '') {
+            return $this->productImagePlaceholder();
+        }
+
+        $path = parse_url($url, PHP_URL_PATH);
+
+        return $path ? url($path) : $url;
+    }
+
+    public function productImagePlaceholder(): string
+    {
+        if (file_exists(public_path('images/fallback_product_image.png'))) {
+            return asset('images/fallback_product_image.png');
+        }
+
+        return asset('images/fallback_product_image.svg');
     }
 
     public function registerMediaConversions(Media $media = null): void {

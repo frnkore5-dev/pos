@@ -38,7 +38,7 @@
                             <div wire:click.prevent="selectProduct({{ $product->id }})" class="col-6 col-md-4 col-lg-3 col-xl-2 mb-3" style="cursor: pointer;">
                                 <div @class(['card pos-product-card h-100 shadow-sm', 'is-out-of-stock' => $product->product_quantity <= 0])>
                                     <div class="pos-product-image-wrap">
-                                        <img src="{{ $product->getProductImageUrl() }}" alt="{{ $product->product_name }}" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/fallback_product_image.png') }}';">
+                                        <img src="{{ $product->getProductImageUrl() }}" alt="{{ $product->product_name }}" loading="lazy" onerror="this.onerror=null;this.src='{{ $product->productImagePlaceholder() }}';">
                                         <span @class([
                                             'pos-product-stock badge',
                                             'badge-success' => $product->product_quantity > 5,

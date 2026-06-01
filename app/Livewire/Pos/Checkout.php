@@ -60,8 +60,6 @@ class Checkout extends Component
 
     public $item_discount;
 
-    public $data;
-
     public $customer_id;
 
     public $total_amount;
@@ -598,7 +596,7 @@ class Checkout extends Component
 
 
 
-        $rowId = $cart->add([
+        $added = $cart->add([
 
             'id'      => $product['id'],
 
@@ -634,7 +632,7 @@ class Checkout extends Component
 
 
 
-        $this->lastCartRowId = $rowId;
+        $this->lastCartRowId = $this->cartRowIdFromAdd($added);
 
         $this->lastProductId = $product['id'];
 
@@ -942,6 +940,17 @@ class Checkout extends Component
 
         $this->total_amount = $this->calculateTotal();
 
+    }
+
+
+
+    private function cartRowIdFromAdd(mixed $added): string
+    {
+        if (is_object($added) && isset($added->rowId)) {
+            return (string) $added->rowId;
+        }
+
+        return (string) $added;
     }
 
 }
